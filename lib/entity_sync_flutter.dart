@@ -24,7 +24,7 @@ class FlutterSyncer<TSyncable extends SyncableMixin> {
       lastSync = DateTime.tryParse(lastSyncPrefs)!;
     }
     print(storageKey() + ' ' + lastSync.toIso8601String());
-    final syncResult = await controller.sync(lastSync);
+    final syncResult = await controller.sync(lastSync.toUtc());
 
     if (!syncResult.hasError) {
       await prefs.setString(storageKey(), DateTime.now().toIso8601String());
