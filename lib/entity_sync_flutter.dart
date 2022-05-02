@@ -14,7 +14,10 @@ class FlutterSyncer<TSyncable extends SyncableMixin> {
     required this.prefs,
   });
 
-  Future<SyncResult<TSyncable>> sync() async {
+  Future<SyncResult<TSyncable>> sync({bool fullSync = false}) async {
+    if (fullSync) {
+      return await controller.sync(DateTime(1900));
+    }
     final lastSyncPrefs = prefs.getString(storageKey());
     late DateTime lastSync;
     if (lastSyncPrefs == null) {
@@ -23,13 +26,11 @@ class FlutterSyncer<TSyncable extends SyncableMixin> {
     } else {
       lastSync = DateTime.tryParse(lastSyncPrefs)!;
     }
-    print(storageKey() + ' ' + lastSync.toIso8601String());
     final syncResult = await controller.sync(lastSync.toUtc());
 
     if (!syncResult.hasError) {
       await prefs.setString(storageKey(), DateTime.now().toIso8601String());
     }
-    print(storageKey() + ' ' + prefs.getString(storageKey())!);
     return syncResult;
   }
 
