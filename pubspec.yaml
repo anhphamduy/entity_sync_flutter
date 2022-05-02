@@ -14,7 +14,7 @@ dependencies:
   entity_sync:
     git:
       url: https://github.com/cmberryau/entity_sync
-      ref: "master-2"
+      ref: "dev"
   shared_preferences: ^2.0.13
 
 dev_dependencies:
